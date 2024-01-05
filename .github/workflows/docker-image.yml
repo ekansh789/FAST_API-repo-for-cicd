@@ -35,40 +35,7 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-     - name: Store image URI as an output
-       id: set-output
-      run: echo "::set-output name=image_uri::$ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG"   
-      
     
-   steps:
-     - name: checkout code 
 
-     - name: Configure AWS cerdentials
-      - uses: aws-action/configure-aws-credentials@v2  
-       with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-    
-     - name:  Login to Amazon ECR
-       id: login-ecr
-       uses: aws-actions/amazon-ecr-login@v1
-
-
-     - name: Build and push Docker image to Amazon ECR
-       id: build and push image
-       env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY:  anita # Replace with your ECR repository name
-          IMAGE_TAG: PYTHON-GIT-ACTION
-      working-directory: fastapi_lambda_api-gateway_sample
-    
-     run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-    - name: Store image URI as an output
-      id: set-output
-      run: echo "::set-output name=image_uri::$ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG"
     
     
